@@ -55,8 +55,8 @@ export default function Index() {
   const [loginError, setLoginError] = useState(false);
 
   const handleInstallGame = (gameName: string) => {
-    toast.success(`${gameName} начинает загрузку...`, {
-      description: 'Проверьте прогресс в разделе загрузок',
+    toast.success(`${gameName} is downloading...`, {
+      description: 'Check progress in downloads',
     });
   };
 
@@ -75,8 +75,8 @@ export default function Index() {
     setOpenWindow(null);
     setIsLoggedIn(false);
     setLoginPassword('');
-    toast.success('macOS Ventura переустановлена!', {
-      description: 'Система успешно восстановлена',
+    toast.success('macOS Ventura reinstalled!', {
+      description: 'System successfully restored',
     });
   };
 
@@ -84,10 +84,10 @@ export default function Index() {
     if (loginPassword.length === 4 && /^\d{4}$/.test(loginPassword)) {
       setIsLoggedIn(true);
       setLoginError(false);
-      toast.success('Вход выполнен успешно!');
+      toast.success('Login successful!');
     } else {
       setLoginError(true);
-      toast.error('Пароль должен содержать 4 цифры');
+      toast.error('Password must contain 4 digits');
     }
   };
 
@@ -103,14 +103,14 @@ export default function Index() {
       <div className="h-screen w-screen bg-black flex items-center justify-center">
         <div className="text-center space-y-6 p-8">
           <div className="text-8xl">⚠️</div>
-          <h1 className="text-4xl font-bold text-white">Критическая ошибка системы</h1>
-          <p className="text-xl text-gray-400">SystemMac32 был удален</p>
-          <p className="text-lg text-gray-500">macOS Ventura не может продолжить работу</p>
+          <h1 className="text-4xl font-bold text-white">Critical System Error</h1>
+          <p className="text-xl text-gray-400">SystemMac32 has been deleted</p>
+          <p className="text-lg text-gray-500">macOS Ventura cannot continue</p>
           <Button 
             onClick={handleReinstall}
             className="mt-8 bg-blue-500 hover:bg-blue-600 text-white px-8 py-6 text-lg"
           >
-            Переустановить систему
+            Reinstall System
           </Button>
         </div>
       </div>
@@ -136,7 +136,7 @@ export default function Index() {
             <div className="space-y-4">
               <div>
                 <label className="text-sm font-medium text-gray-700 block mb-2">
-                  Введите пароль (4 цифры)
+                  Enter password (4 digits)
                 </label>
                 <input
                   type="password"
@@ -153,7 +153,7 @@ export default function Index() {
                 {loginError && (
                   <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
                     <Icon name="AlertCircle" size={14} />
-                    Пароль должен содержать 4 цифры
+                    Password must contain 4 digits
                   </p>
                 )}
               </div>
@@ -164,11 +164,11 @@ export default function Index() {
                 className="w-full py-6 text-lg"
               >
                 <Icon name="Unlock" size={20} className="mr-2" />
-                Войти
+                Log In
               </Button>
               
               <p className="text-xs text-center text-gray-500">
-                Подсказка: любые 4 цифры
+                Hint: any 4 digits
               </p>
             </div>
           </Card>
@@ -194,14 +194,14 @@ export default function Index() {
             <button 
               onClick={() => setOpenWindow('settings')}
               className="dock-icon bg-white/90 backdrop-blur flex items-center justify-center text-3xl hover:bg-white transition-all"
-              title="Настройки"
+              title="Settings"
             >
               ⚙️
             </button>
             <button 
               onClick={() => setOpenWindow('thisMac')}
               className="dock-icon bg-white/90 backdrop-blur flex items-center justify-center text-3xl hover:bg-white transition-all"
-              title="Этот Mac"
+              title="This Mac"
             >
               💻
             </button>
@@ -229,8 +229,8 @@ export default function Index() {
           <div className="h-12 w-px bg-white/20"></div>
           {[
             { icon: '🌐', action: () => window.open('https://google.com', '_blank'), title: 'Google' },
-            { icon: '⚙️', action: () => setOpenWindow('settings'), title: 'Настройки' },
-            { icon: '💻', action: () => setOpenWindow('thisMac'), title: 'Этот Mac' },
+            { icon: '⚙️', action: () => setOpenWindow('settings'), title: 'Settings' },
+            { icon: '💻', action: () => setOpenWindow('thisMac'), title: 'This Mac' },
             { icon: '🛍️', action: () => setOpenWindow('macShop'), title: 'MacSHOP' },
             { icon: '🎮', action: () => setOpenWindow('macSteam'), title: 'MacSteam' },
           ].map((item, idx) => (
@@ -251,27 +251,27 @@ export default function Index() {
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-2">
               <span className="text-3xl">⚙️</span>
-              Настройки macOS Ventura
+              macOS Ventura Settings
             </DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="appearance" className="mt-4">
             <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="appearance">Внешний вид</TabsTrigger>
-              <TabsTrigger value="sound">Звук</TabsTrigger>
-              <TabsTrigger value="network">Сеть</TabsTrigger>
-              <TabsTrigger value="account">Учетная запись</TabsTrigger>
+              <TabsTrigger value="appearance">Appearance</TabsTrigger>
+              <TabsTrigger value="sound">Sound</TabsTrigger>
+              <TabsTrigger value="network">Network</TabsTrigger>
+              <TabsTrigger value="account">Account</TabsTrigger>
             </TabsList>
             
             <TabsContent value="appearance" className="space-y-6 mt-4">
               <div>
-                <h3 className="text-lg font-semibold mb-4">Обои рабочего стола</h3>
+                <h3 className="text-lg font-semibold mb-4">Desktop Wallpaper</h3>
                 <div className="grid grid-cols-3 gap-4">
                   {wallpapers.map((wp) => (
                     <button
                       key={wp.id}
                       onClick={() => {
                         setWallpaper(wp);
-                        toast.success(`Обои "${wp.name}" установлены`);
+                        toast.success(`Wallpaper "${wp.name}" applied`);
                       }}
                       className={`aspect-video rounded-lg bg-gradient-to-br ${wp.gradient} transition-all ${
                         wallpaper.id === wp.id ? 'ring-4 ring-blue-500 scale-105' : 'hover:scale-105'
@@ -287,26 +287,26 @@ export default function Index() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-2">
                     <Icon name="Moon" size={20} />
-                    <span className="font-medium">Темный режим</span>
+                    <span className="font-medium">Dark Mode</span>
                   </div>
                   <Button
                     variant={darkMode ? "default" : "outline"}
                     size="sm"
                     onClick={() => {
                       setDarkMode(!darkMode);
-                      toast.success(darkMode ? 'Светлый режим включен' : 'Темный режим включен');
+                      toast.success(darkMode ? 'Light mode enabled' : 'Dark mode enabled');
                     }}
                   >
-                    {darkMode ? 'Вкл' : 'Выкл'}
+                    {darkMode ? 'On' : 'Off'}
                   </Button>
                 </div>
-                <p className="text-sm text-gray-500">Автоматически переключает тему в зависимости от времени суток</p>
+                <p className="text-sm text-gray-500">Automatically switches theme based on time of day</p>
               </Card>
               
               <Card className="p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Icon name="Sun" size={20} />
-                  <span className="font-medium">Яркость: {brightness}%</span>
+                  <span className="font-medium">Brightness: {brightness}%</span>
                 </div>
                 <input
                   type="range"
@@ -323,7 +323,7 @@ export default function Index() {
               <Card className="p-4">
                 <div className="flex items-center gap-2 mb-3">
                   <Icon name="Volume2" size={20} />
-                  <span className="font-medium">Громкость: {volume}%</span>
+                  <span className="font-medium">Volume: {volume}%</span>
                 </div>
                 <input
                   type="range"
@@ -336,12 +336,12 @@ export default function Index() {
               </Card>
               
               <Card className="p-4 space-y-4">
-                <h3 className="font-semibold text-lg">Звуковые эффекты</h3>
+                <h3 className="font-semibold text-lg">Sound Effects</h3>
                 <div className="space-y-3">
-                  {['Звук запуска', 'Звук уведомлений', 'Звук клавиатуры'].map((item) => (
+                  {['Startup sound', 'Notification sound', 'Keyboard sound'].map((item) => (
                     <div key={item} className="flex items-center justify-between">
                       <span className="text-sm">{item}</span>
-                      <Button variant="outline" size="sm">Включено</Button>
+                      <Button variant="outline" size="sm">Enabled</Button>
                     </div>
                   ))}
                 </div>
@@ -360,10 +360,10 @@ export default function Index() {
                     size="sm"
                     onClick={() => {
                       setWifiEnabled(!wifiEnabled);
-                      toast.success(wifiEnabled ? 'Wi-Fi выключен' : 'Wi-Fi включен');
+                      toast.success(wifiEnabled ? 'Wi-Fi disabled' : 'Wi-Fi enabled');
                     }}
                   >
-                    {wifiEnabled ? 'Вкл' : 'Выкл'}
+                    {wifiEnabled ? 'On' : 'Off'}
                   </Button>
                 </div>
                 {wifiEnabled && (
@@ -371,7 +371,7 @@ export default function Index() {
                     <div className="p-3 bg-blue-50 rounded-lg flex items-center justify-between">
                       <div>
                         <p className="font-medium">My WiFi Network</p>
-                        <p className="text-xs text-gray-500">Подключено</p>
+                        <p className="text-xs text-gray-500">Connected</p>
                       </div>
                       <Icon name="Check" size={20} className="text-blue-500" />
                     </div>
@@ -390,10 +390,10 @@ export default function Index() {
                     size="sm"
                     onClick={() => {
                       setBluetoothEnabled(!bluetoothEnabled);
-                      toast.success(bluetoothEnabled ? 'Bluetooth выключен' : 'Bluetooth включен');
+                      toast.success(bluetoothEnabled ? 'Bluetooth disabled' : 'Bluetooth enabled');
                     }}
                   >
-                    {bluetoothEnabled ? 'Вкл' : 'Выкл'}
+                    {bluetoothEnabled ? 'On' : 'Off'}
                   </Button>
                 </div>
               </Card>
@@ -412,7 +412,7 @@ export default function Index() {
                 </div>
                 <div className="space-y-3">
                   <div>
-                    <label className="text-sm font-medium">Имя пользователя</label>
+                    <label className="text-sm font-medium">Username</label>
                     <input
                       type="text"
                       value={userName}
@@ -420,17 +420,17 @@ export default function Index() {
                       className="w-full mt-1 p-2 border rounded-lg"
                     />
                   </div>
-                  <Button className="w-full" onClick={() => toast.success('Изменения сохранены')}>
-                    Сохранить изменения
+                  <Button className="w-full" onClick={() => toast.success('Changes saved')}>
+                    Save Changes
                   </Button>
                 </div>
               </Card>
               
               <Card className="p-4 space-y-3">
-                <h3 className="font-semibold">Безопасность</h3>
+                <h3 className="font-semibold">Security</h3>
                 <Button variant="outline" className="w-full justify-start gap-2">
                   <Icon name="Lock" size={16} />
-                  Изменить пароль
+                  Change Password
                 </Button>
                 <Button variant="outline" className="w-full justify-start gap-2">
                   <Icon name="Fingerprint" size={16} />
@@ -447,7 +447,7 @@ export default function Index() {
           <DialogHeader>
             <DialogTitle className="text-2xl flex items-center gap-2">
               <span className="text-3xl">💻</span>
-              Этот Mac
+              This Mac
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-6 mt-4">
@@ -459,14 +459,14 @@ export default function Index() {
                 className="gap-2"
               >
                 <Icon name="RotateCcw" size={16} />
-                Переустановить устройство
+                Reinstall Device
               </Button>
             </div>
 
             <Tabs defaultValue="disks" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="disks">Эти диски для вашего Mac</TabsTrigger>
-                <TabsTrigger value="system">Информация</TabsTrigger>
+                <TabsTrigger value="disks">Disks for your Mac</TabsTrigger>
+                <TabsTrigger value="system">Information</TabsTrigger>
               </TabsList>
               <TabsContent value="disks" className="space-y-4 mt-4">
                 <Card className="p-6 space-y-4">
@@ -477,12 +477,12 @@ export default function Index() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-lg">F.mac</h4>
-                        <p className="text-sm text-gray-500">Основной диск</p>
+                        <p className="text-sm text-gray-500">Main disk</p>
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold">200 GB из 700 GB</p>
-                      <p className="text-sm text-gray-500">500 GB свободно</p>
+                      <p className="font-semibold">200 GB of 700 GB</p>
+                      <p className="text-sm text-gray-500">500 GB available</p>
                     </div>
                   </div>
                   <Progress value={28.57} className="h-2" />
@@ -496,7 +496,7 @@ export default function Index() {
                       </div>
                       <div>
                         <h4 className="font-semibold text-lg">A.Setting</h4>
-                        <p className="text-sm text-gray-500">Системные настройки</p>
+                        <p className="text-sm text-gray-500">System settings</p>
                       </div>
                     </div>
                   </div>
