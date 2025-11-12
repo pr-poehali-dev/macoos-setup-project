@@ -44,6 +44,12 @@ export default function Index() {
   const [showCrashDialog, setShowCrashDialog] = useState(false);
   const [systemCrashed, setSystemCrashed] = useState(false);
   const [systemExists, setSystemExists] = useState(true);
+  const [brightness, setBrightness] = useState(80);
+  const [volume, setVolume] = useState(50);
+  const [wifiEnabled, setWifiEnabled] = useState(true);
+  const [bluetoothEnabled, setBluetoothEnabled] = useState(true);
+  const [darkMode, setDarkMode] = useState(false);
+  const [userName, setUserName] = useState('Пользователь');
 
   const handleInstallGame = (gameName: string) => {
     toast.success(`${gameName} начинает загрузку...`, {
@@ -165,27 +171,191 @@ export default function Index() {
               Настройки macOS Ventura
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-6 mt-4">
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Обои рабочего стола</h3>
-              <div className="grid grid-cols-3 gap-4">
-                {wallpapers.map((wp) => (
-                  <button
-                    key={wp.id}
-                    onClick={() => {
-                      setWallpaper(wp);
-                      toast.success(`Обои "${wp.name}" установлены`);
-                    }}
-                    className={`aspect-video rounded-lg bg-gradient-to-br ${wp.gradient} transition-all ${
-                      wallpaper.id === wp.id ? 'ring-4 ring-blue-500 scale-105' : 'hover:scale-105'
-                    }`}
-                  >
-                    <span className="text-white text-xs font-medium">{wp.name}</span>
-                  </button>
-                ))}
+          <Tabs defaultValue="appearance" className="mt-4">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="appearance">Внешний вид</TabsTrigger>
+              <TabsTrigger value="sound">Звук</TabsTrigger>
+              <TabsTrigger value="network">Сеть</TabsTrigger>
+              <TabsTrigger value="account">Учетная запись</TabsTrigger>
+            </TabsList>
+            
+            <TabsContent value="appearance" className="space-y-6 mt-4">
+              <div>
+                <h3 className="text-lg font-semibold mb-4">Обои рабочего стола</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {wallpapers.map((wp) => (
+                    <button
+                      key={wp.id}
+                      onClick={() => {
+                        setWallpaper(wp);
+                        toast.success(`Обои "${wp.name}" установлены`);
+                      }}
+                      className={`aspect-video rounded-lg bg-gradient-to-br ${wp.gradient} transition-all ${
+                        wallpaper.id === wp.id ? 'ring-4 ring-blue-500 scale-105' : 'hover:scale-105'
+                      }`}
+                    >
+                      <span className="text-white text-xs font-medium">{wp.name}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          </div>
+              
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-2">
+                    <Icon name="Moon" size={20} />
+                    <span className="font-medium">Темный режим</span>
+                  </div>
+                  <Button
+                    variant={darkMode ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setDarkMode(!darkMode);
+                      toast.success(darkMode ? 'Светлый режим включен' : 'Темный режим включен');
+                    }}
+                  >
+                    {darkMode ? 'Вкл' : 'Выкл'}
+                  </Button>
+                </div>
+                <p className="text-sm text-gray-500">Автоматически переключает тему в зависимости от времени суток</p>
+              </Card>
+              
+              <Card className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon name="Sun" size={20} />
+                  <span className="font-medium">Яркость: {brightness}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={brightness}
+                  onChange={(e) => setBrightness(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="sound" className="space-y-4 mt-4">
+              <Card className="p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Icon name="Volume2" size={20} />
+                  <span className="font-medium">Громкость: {volume}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={volume}
+                  onChange={(e) => setVolume(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                />
+              </Card>
+              
+              <Card className="p-4 space-y-4">
+                <h3 className="font-semibold text-lg">Звуковые эффекты</h3>
+                <div className="space-y-3">
+                  {['Звук запуска', 'Звук уведомлений', 'Звук клавиатуры'].map((item) => (
+                    <div key={item} className="flex items-center justify-between">
+                      <span className="text-sm">{item}</span>
+                      <Button variant="outline" size="sm">Включено</Button>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="network" className="space-y-4 mt-4">
+              <Card className="p-4">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <Icon name="Wifi" size={20} className={wifiEnabled ? 'text-blue-500' : 'text-gray-400'} />
+                    <span className="font-medium">Wi-Fi</span>
+                  </div>
+                  <Button
+                    variant={wifiEnabled ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setWifiEnabled(!wifiEnabled);
+                      toast.success(wifiEnabled ? 'Wi-Fi выключен' : 'Wi-Fi включен');
+                    }}
+                  >
+                    {wifiEnabled ? 'Вкл' : 'Выкл'}
+                  </Button>
+                </div>
+                {wifiEnabled && (
+                  <div className="space-y-2">
+                    <div className="p-3 bg-blue-50 rounded-lg flex items-center justify-between">
+                      <div>
+                        <p className="font-medium">My WiFi Network</p>
+                        <p className="text-xs text-gray-500">Подключено</p>
+                      </div>
+                      <Icon name="Check" size={20} className="text-blue-500" />
+                    </div>
+                  </div>
+                )}
+              </Card>
+              
+              <Card className="p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Icon name="Bluetooth" size={20} className={bluetoothEnabled ? 'text-blue-500' : 'text-gray-400'} />
+                    <span className="font-medium">Bluetooth</span>
+                  </div>
+                  <Button
+                    variant={bluetoothEnabled ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => {
+                      setBluetoothEnabled(!bluetoothEnabled);
+                      toast.success(bluetoothEnabled ? 'Bluetooth выключен' : 'Bluetooth включен');
+                    }}
+                  >
+                    {bluetoothEnabled ? 'Вкл' : 'Выкл'}
+                  </Button>
+                </div>
+              </Card>
+            </TabsContent>
+            
+            <TabsContent value="account" className="space-y-4 mt-4">
+              <Card className="p-6">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-4xl text-white">
+                    👤
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold">{userName}</h3>
+                    <p className="text-sm text-gray-500">Apple ID: user@icloud.com</p>
+                  </div>
+                </div>
+                <div className="space-y-3">
+                  <div>
+                    <label className="text-sm font-medium">Имя пользователя</label>
+                    <input
+                      type="text"
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                      className="w-full mt-1 p-2 border rounded-lg"
+                    />
+                  </div>
+                  <Button className="w-full" onClick={() => toast.success('Изменения сохранены')}>
+                    Сохранить изменения
+                  </Button>
+                </div>
+              </Card>
+              
+              <Card className="p-4 space-y-3">
+                <h3 className="font-semibold">Безопасность</h3>
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Icon name="Lock" size={16} />
+                  Изменить пароль
+                </Button>
+                <Button variant="outline" className="w-full justify-start gap-2">
+                  <Icon name="Fingerprint" size={16} />
+                  Touch ID
+                </Button>
+              </Card>
+            </TabsContent>
+          </Tabs>
         </DialogContent>
       </Dialog>
 
