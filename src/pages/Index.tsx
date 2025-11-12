@@ -49,7 +49,10 @@ export default function Index() {
   const [wifiEnabled, setWifiEnabled] = useState(true);
   const [bluetoothEnabled, setBluetoothEnabled] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
-  const [userName, setUserName] = useState('Пользователь');
+  const [userName, setUserName] = useState('Administrator');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginPassword, setLoginPassword] = useState('');
+  const [loginError, setLoginError] = useState(false);
 
   const handleInstallGame = (gameName: string) => {
     toast.success(`${gameName} начинает загрузку...`, {
@@ -70,9 +73,29 @@ export default function Index() {
     setSystemExists(true);
     setShowReinstallDialog(false);
     setOpenWindow(null);
+    setIsLoggedIn(false);
+    setLoginPassword('');
     toast.success('macOS Ventura переустановлена!', {
       description: 'Система успешно восстановлена',
     });
+  };
+
+  const handleLogin = () => {
+    if (loginPassword.length === 4 && /^\d{4}$/.test(loginPassword)) {
+      setIsLoggedIn(true);
+      setLoginError(false);
+      toast.success('Вход выполнен успешно!');
+    } else {
+      setLoginError(true);
+      toast.error('Пароль должен содержать 4 цифры');
+    }
+  };
+
+  const handlePasswordChange = (value: string) => {
+    if (value.length <= 4 && /^\d*$/.test(value)) {
+      setLoginPassword(value);
+      setLoginError(false);
+    }
   };
 
   if (systemCrashed) {
@@ -89,6 +112,66 @@ export default function Index() {
           >
             Переустановить систему
           </Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="h-screen w-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-500 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="relative z-10 h-full flex items-center justify-center">
+          <Card className="macos-window p-8 w-full max-w-md space-y-6">
+            <div className="text-center space-y-4">
+              <div className="w-24 h-24 mx-auto bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-5xl text-white">
+                👤
+              </div>
+              <div>
+                <h2 className="text-2xl font-semibold">{userName}</h2>
+                <p className="text-sm text-gray-500 mt-1">Logging in the Mac</p>
+              </div>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700 block mb-2">
+                  Введите пароль (4 цифры)
+                </label>
+                <input
+                  type="password"
+                  maxLength={4}
+                  value={loginPassword}
+                  onChange={(e) => handlePasswordChange(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleLogin()}
+                  className={`w-full p-3 text-center text-2xl tracking-widest border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                    loginError ? 'border-red-500 bg-red-50' : 'border-gray-300'
+                  }`}
+                  placeholder="••••"
+                  autoFocus
+                />
+                {loginError && (
+                  <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                    <Icon name="AlertCircle" size={14} />
+                    Пароль должен содержать 4 цифры
+                  </p>
+                )}
+              </div>
+              
+              <Button 
+                onClick={handleLogin}
+                disabled={loginPassword.length !== 4}
+                className="w-full py-6 text-lg"
+              >
+                <Icon name="Unlock" size={20} className="mr-2" />
+                Войти
+              </Button>
+              
+              <p className="text-xs text-center text-gray-500">
+                Подсказка: любые 4 цифры
+              </p>
+            </div>
+          </Card>
         </div>
       </div>
     );
@@ -324,7 +407,7 @@ export default function Index() {
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold">{userName}</h3>
-                    <p className="text-sm text-gray-500">Apple ID: user@icloud.com</p>
+                    <p className="text-sm text-gray-500">Apple ID: administrator@icloud.com</p>
                   </div>
                 </div>
                 <div className="space-y-3">
